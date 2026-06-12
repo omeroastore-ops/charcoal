@@ -44,7 +44,7 @@ export function SiteHeader() {
       <div className="header-inner">
         <Link to="/" className="brand-mark" aria-label="Karl Josef Stoll – Startseite">
           <span className="brand-sigil"><Flame aria-hidden="true" /></span>
-          <span className="min-w-0"><strong>Köhler Stoll</strong><small>Dachsberg · Schwarzwald</small></span>
+          <span className="brand-copy"><strong>Köhler Stoll</strong><small>Dachsberg · Schwarzwald</small></span>
         </Link>
         <nav className={open ? "site-nav is-open" : "site-nav"} aria-label="Hauptnavigation">
           <Link to="/" activeOptions={{ exact: true }}>{nav.journey[language]}</Link>
@@ -97,18 +97,16 @@ export function CharcoalGuide() {
       if (!checkpoints.length) return;
 
       const viewportY = window.innerHeight * 0.5;
-      const coalBounds = coal.getBoundingClientRect();
       const anchors = checkpoints.map((checkpoint) => {
         const bounds = checkpoint.getBoundingClientRect();
         return bounds.top + window.scrollY + bounds.height / 2 - viewportY;
       });
-      const firstApproach = anchors[0] - window.innerHeight * 0.72;
       const lastIndex = anchors.length - 1;
       let segment = 0;
       let progress = 0;
 
       if (window.scrollY < anchors[0]) {
-        progress = Math.max(0, Math.min((window.scrollY - firstApproach) / (anchors[0] - firstApproach), 1));
+        progress = 0;
       } else if (window.scrollY >= anchors[lastIndex]) {
         segment = Math.max(lastIndex - 1, 0);
         progress = 1;
@@ -122,26 +120,17 @@ export function CharcoalGuide() {
         Math.abs(anchor - window.scrollY) < Math.abs(anchors[best] - window.scrollY) ? index : best, 0);
       const snapRange = window.innerWidth >= 768 ? 90 : 64;
       const isSnapped = Math.abs(anchors[nearestIndex] - window.scrollY) <= snapRange;
-      const direction = segment % 2 === 0 ? -1 : 1;
-      const amplitude = Math.min(window.innerWidth * (window.innerWidth >= 768 ? 0.25 : 0.18), 320);
-      const winding = Math.sin(progress * Math.PI) * amplitude * direction;
-      const verticalWinding = Math.sin(progress * Math.PI * 2) * (window.innerWidth >= 768 ? 38 : 20);
-      let targetX = window.innerWidth / 2 + winding;
-      let targetY = viewportY + verticalWinding;
+      const guideBounds = document.querySelector<HTMLElement>(".journey-line")?.getBoundingClientRect();
+      const targetX = guideBounds ? guideBounds.left + guideBounds.width / 2 : window.innerWidth / 2;
+      const targetY = viewportY;
 
       checkpoints.forEach((checkpoint, index) => {
         checkpoint.classList.toggle("is-complete", window.scrollY >= anchors[index] - snapRange);
         checkpoint.classList.toggle("is-snapped", isSnapped && index === nearestIndex);
       });
 
-      if (isSnapped) {
-        const targetBounds = checkpoints[nearestIndex].getBoundingClientRect();
-        targetX = targetBounds.left + targetBounds.width / 2;
-        targetY = targetBounds.top + targetBounds.height / 2;
-      }
-
       coal.classList.toggle("is-snapped", isSnapped);
-      coal.style.transform = `translate3d(${targetX - window.innerWidth / 2}px, ${targetY - coalBounds.height / 2}px, 0) rotate(${(segment + progress) * 150}deg)`;
+      coal.style.transform = `translate3d(${targetX - window.innerWidth / 2}px, calc(${targetY}px - 50%), 0) rotate(${(segment + progress) * 150}deg)`;
     };
     const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
