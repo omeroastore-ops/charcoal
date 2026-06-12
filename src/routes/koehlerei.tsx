@@ -2,10 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageFrame, EmberDivider, useLanguage } from "@/components/koehler-site";
-import woodAsset from "@/assets/meiler-holz.jpg.asset.json";
-import greenAsset from "@/assets/meiler-gruen.jpg.asset.json";
-import fireAsset from "@/assets/meiler-feuer.jpg.asset.json";
-import coalAsset from "@/assets/holzkohle.jpg.asset.json";
+import woodAsset from "@/assets/meiler-holz-new.jpg";
+import greenAsset from "@/assets/meiler-gruen-new.jpg";
+import fireAsset from "@/assets/meiler-feuer-new.jpg";
+import coalAsset from "@/assets/holzkohle-new.jpg";
 
 export const Route = createFileRoute("/koehlerei")({
   head: () => ({ meta: [
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/koehlerei")({
     { name: "description", content: "Vom Aufschichten des Meilers bis zur fertigen Holzkohle: das historische Handwerk Schritt für Schritt." },
     { property: "og:title", content: "Die Köhlerei – Handwerk & Prozess" },
     { property: "og:description", content: "Entdecken Sie den traditionellen Aufbau und Brand eines Holzkohlemeilers." },
-    { property: "og:image", content: woodAsset.url },
+    { property: "og:image", content: woodAsset },
   ] }), component: CraftPage,
 });
 
@@ -32,7 +32,7 @@ function CraftPage() {
     <div className="book-spread">
       {steps.map((step, i) => <article className="process-entry" key={step.n}>
         <div className="process-text"><span className="chapter-number">Caput {step.n}</span><h2>{step[language === "de" ? "de" : "en"]}</h2><p>{step[language === "de" ? "deText" : "enText"]}</p><div className="ink-flourish" aria-hidden="true">❧</div></div>
-        <figure className="charred-photo"><img src={step.image.url} loading={i > 0 ? "lazy" : "eager"} alt={step[language === "de" ? "de" : "en"]} /><figcaption>{t("Aus dem Bildarchiv von Karl Josef Stoll", "From Karl Josef Stoll’s photographic archive")}</figcaption></figure>
+        <figure className="charred-photo"><img src={step.image} width={1024} height={768} loading={i > 0 ? "lazy" : "eager"} alt={step[language === "de" ? "de" : "en"]} /><figcaption>{t("Aus dem Bildarchiv von Karl Josef Stoll", "From Karl Josef Stoll’s photographic archive")}</figcaption></figure>
       </article>)}
     </div>
     <div className="craft-cta">
