@@ -121,6 +121,7 @@ export function CharcoalGuide() {
       const snapRange = window.innerWidth >= 768 ? 90 : 64;
       const isSnapped = Math.abs(anchors[nearestIndex] - window.scrollY) <= snapRange;
       const guideBounds = document.querySelector<HTMLElement>(".journey-line")?.getBoundingClientRect();
+      const isOnJourney = Boolean(guideBounds && guideBounds.top <= viewportY && guideBounds.bottom >= viewportY);
       const targetX = guideBounds ? guideBounds.left + guideBounds.width / 2 : window.innerWidth / 2;
       const targetY = viewportY;
 
@@ -129,6 +130,7 @@ export function CharcoalGuide() {
         checkpoint.classList.toggle("is-snapped", isSnapped && index === nearestIndex);
       });
 
+      coal.classList.toggle("is-visible", isOnJourney);
       coal.classList.toggle("is-snapped", isSnapped);
       coal.style.transform = `translate3d(${targetX - window.innerWidth / 2}px, calc(${targetY}px - 50%), 0) rotate(${(segment + progress) * 150}deg)`;
     };
