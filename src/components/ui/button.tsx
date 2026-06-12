@@ -16,6 +16,9 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        manuscript: "rounded-none border border-primary/70 bg-primary px-6 font-display uppercase tracking-[0.16em] text-primary-foreground shadow-ember hover:bg-accent hover:text-accent-foreground",
+        manuscriptOutline: "rounded-none border border-foreground/35 bg-transparent px-6 font-display uppercase tracking-[0.16em] text-foreground hover:border-primary hover:text-primary",
+        manuscriptIcon: "border border-foreground/30 bg-transparent text-foreground hover:border-primary hover:text-primary",
       },
       size: {
         default: "h-9 px-4 py-2",
